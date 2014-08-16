@@ -11,5 +11,3 @@ For now, you'll find only the core library. Several demos are coming.
 &nbsp;
 
 ### All docs online: http://gestures.io/develop
-
-Last update: 2014, Feb 13th
