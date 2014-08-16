@@ -4,9 +4,21 @@ __[Gestures.IO](http://gestures.io/)__ simplifies the way you create gesture-bas
 
 In this repository, you'll find eveything you need to create new interactive contents using Javascript (via WebSocket).
 
-For now, you'll find only the core library. Several demos are coming.
 
-* __lib__: _the core library_.
+## API
+
+Here is the core library:
+
+* __[api](/api)__: import these two scripts into your project.
+
+
+## Samples
+
+Two first samples, Jquery-based, to quickly see how things are simple. Several demos are coming.
+
+* __[skeleton](/samples/skeleton)__: all skeleton joints. No more.
+* __[swipe](/samples/swipe)__: swipe use on each skeleton joint.
+
 
 &nbsp;
 
