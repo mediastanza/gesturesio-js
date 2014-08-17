@@ -1,4 +1,4 @@
-# GIO-javascript-lib-demos
+# Gestures.IO / Javascript
 
 __[Gestures.IO](http://gestures.io/)__ simplifies the way you create gesture-based Natural Interactions.
 
