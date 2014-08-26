@@ -14,10 +14,10 @@ Here is the core library:
 
 ## Samples
 
-Two first samples, Jquery-based, to quickly see how things are simple. Several demos are coming.
+Two first samples, Jquery-based, to quickly see how things are simple. Several demos will come.
 
-* __[skeleton](/samples/skeleton)__: all skeleton joints. No more.
-* __[swipe](/samples/swipe)__: swipe use on each skeleton joint.
+* __[colors](/samples/colors)__: each skeleton joint, swipe on each hand.
+* __[drums](/samples/drums)__: your right hand is the Kick Drum, your left hand if the Snare Drum.
 
 
 &nbsp;
