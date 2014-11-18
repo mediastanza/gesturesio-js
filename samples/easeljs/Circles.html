@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EaselJS Example: Rollovers and Drag & Drop</title>
+
+  <link href="http://www.createjs.com/Demos/EaselJS/assets/demoStyles.css" rel="stylesheet" type="text/css" />
+
+	<!-- Note: All core TweenJS classes are listed here: -->
+  <script type="text/javascript" src="http://code.createjs.com/createjs-2013.12.12.min.js"></script>
+
+	<!-- We also provide hosted minified versions of all CreateJS libraries.
+	  http://code.createjs.com -->
+
+    <script>
+        var canvas;
+        var stage;
+        var tweens;
+        var activeCount;
+        var circleCount = 25;
+        var text;
+
+        function init() {
+	        if (window.top != window) {
+                document.getElementById("header").style.display = "none";
+            }
+
+            canvas = document.getElementById("testCanvas");
+            stage = new createjs.Stage(canvas);
+			      stage.enableDOMEvents(true);
+            tweens = [];
+            stage.enableMouseOver(10);
+			      createjs.Touch.enable(stage);
+			
+            for (var i=0; i<circleCount; i++) {
+                // draw the circle, and put it on stage:
+                var circle = new createjs.Shape();
+                circle.graphics.setStrokeStyle(15);
+                circle.graphics.beginStroke("#113355");
+                circle.graphics.drawCircle(0,0,(i+1)*4);
+                circle.alpha = 1-i*0.02;
+                circle.x = Math.random()*550;
+                circle.y = Math.random()*400;
+                circle.compositeOperation = "lighter";
+
+                var tween = createjs.Tween.get(circle).to({x:275,y:200}, (0.5+i*0.04)*1500, createjs.Ease.bounceOut).call(tweenComplete);
+                tweens.push({tween:tween, ref:circle});
+                stage.addChild(circle);
+            }
+            activeCount = circleCount;
+            stage.addEventListener("stagemousemove", handleMouseMove);
+
+	        text = new createjs.Text("Move Anywhere to Tween", "36px Arial", "#777");
+	        text.x = 350;
+	        text.y = 200;
+	        stage.addChild(text);
+			
+
+			    createjs.Ticker.addEventListener("tick", tick);
+        }
+
+
+        function handleMouseMove(event) {
+	        if (text) {
+	        	stage.removeChild(text);
+	        	text = null;
+	        }
+            for (var i=0; i<circleCount; i++) {
+                var ref = tweens[i].ref;
+                var tween = tweens[i].tween;
+				        createjs.Tween.get(ref,{override:true}).to({x:stage.mouseX,y:stage.mouseY}, (0.5+i*0.04)*1500, createjs.Ease.bounceOut).call(tweenComplete);
+            }
+            activeCount = circleCount;
+        }
+
+        function tweenComplete() {
+            activeCount--;
+        }
+
+        function tick(event) {
+            if (activeCount) { stage.update(event); }
+        }
+
+
+    </script>
+</head>
+<body onload="init();">
+
+
+    <canvas id="testCanvas" width="1200" height="1000"></canvas>
+
+</body>
+</html>

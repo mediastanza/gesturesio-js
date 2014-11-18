@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EaselJS: Curve To Demo</title>
+	<link href="//www.createjs.com/Demos/EaselJS/assets/demoStyles.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="//code.createjs.com/createjs-2013.12.12.min.js"></script>
+	<script type="text/javascript" src="//cdn.gestures.io/js/gesturesio.js"></script>
+</head>
+<body>
+
+	<canvas id="myCanvas" width="1500" height="1000"></canvas>
+
+	<script>
+		window.onload = function() {
+			GIO.init(1500, 1000);
+			GIO.connect();
+			init();
+			animate();
+		}
+
+		/****************
+		 * EASELJS INIT *
+		 ****************/
+
+		var canvas, stage;
+		var drawingCanvas;
+		var oldPt;
+		var oldMidPt;
+		var title;
+		var color;
+		var stroke;
+		var colors;
+		var index;
+
+		function init() {
+			if (window.top != window) {
+				document.getElementById("header").style.display = "none";
+			}
+			canvas = document.getElementById("myCanvas");
+			index = 0;
+			colors = ["#828b20", "#b0ac31", "#cbc53d", "#fad779", "#f9e4ad", "#faf2db", "#563512", "#9b4a0b", "#d36600", "#fe8a00", "#f9a71f"];
+
+			//check to see if we are running in a browser with touch support
+			stage = new createjs.Stage(canvas);
+			stage.autoClear = false;
+			stage.enableDOMEvents(true);
+
+			createjs.Touch.enable(stage);
+			createjs.Ticker.setFPS(24);
+
+			drawingCanvas = new createjs.Shape();
+
+			title = new createjs.Text("Click and Drag to draw", "36px Arial", "#777777");
+			title.x = 300;
+			title.y = 200;
+			stage.addChild(title);
+
+			stage.addChild(drawingCanvas);
+			stage.update();
+		}
+
+		/********************
+		 * GESTURES.IO INIT *
+		 ********************/
+
+		var GIO = G.IO();
+		function animate() {
+
+			// Skeletons tracking
+			for (var i = 0; i < GIO.users.length; i++) {
+
+				// Get the skeleton by its tracking ID
+				skeleton = GIO.users[i];
+				
+				// Update on each cycle
+				for (var j = 0; j < skeleton.joints.length; j++) {
+
+					// Here we choose to work with right hand
+					if (skeleton.joints[j].name == "right_hand") {
+
+						/******************
+						  EASELJS UPDATE */
+
+						if (stage.contains(title)) { stage.clear(); stage.removeChild(title); }
+
+						var midPt = new createjs.Point(skeleton.joints[j].x, skeleton.joints[j].y);
+
+						color = colors[(index++)%colors.length];
+						stroke = 20;
+						oldPt = new createjs.Point(skeleton.joints[j].x+1.5, skeleton.joints[j].y+1.5);
+						oldMidPt = oldPt;
+
+						drawingCanvas.graphics.clear().setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
+
+						oldPt.x = skeleton.joints[j].x;
+						oldPt.y = skeleton.joints[j].y;
+
+						oldMidPt.x = midPt.x;
+						oldMidPt.y = midPt.y;
+
+						/* EASELJS UPDATE
+						******************/
+
+					}
+				}
+			}
+
+			stage.update();					// Update EaselJS anim
+			window.requestAnimationFrame(animate);		// Update Gestures.IO tracking
+		}
+
+	</script>
+
+</body>
+</html>
